@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
+    <script>
+        // Initialize the Firebase SDK
+    firebase.initializeApp({
+      // Your Firebase configuration options
+        apiKey: "AIzaSyCdxgD2PVNLohexqk9vxNsOxeQD0DOFa3M",
+        authDomain: "devfinal-e54c9.firebaseapp.com",
+        databaseURL: "https://devfinal-e54c9-default-rtdb.firebaseio.com",
+        projectId: "devfinal-e54c9",
+        storageBucket: "devfinal-e54c9.appspot.com",
+        messagingSenderId: "258136195811",
+        appId: "1:258136195811:web:2321a05f4178b46a7cfbd6",
+        measurementId: "G-P2JF39S3J3"
+    });
+    
+    // Get a reference to the "data" collection
+    const dataCollection = firebase.firestore().collection("data");
+    
+    // Get all the documents from the collection
+    dataCollection.get().then((querySnapshot) => {
+      // Loop through each document
+      querySnapshot.forEach((doc) => {
+        // Get the name and downloadUrl fields from the document
+        const name = doc.data().name;
+        const downloadUrl = doc.data().downloadUrl;
+    
+        // Call a function to display the data in the HTML div container
+        displayData(name, downloadUrl);
+      });
+    });
+    </script>
+    <script>
+        function displayData(name, downloadUrl) {
+            // Get a reference to the HTML div container
+            const dataContainer = document.getElementById("data-container");
+          
+            // Create a new HTML element to display the data
+            const dataElement = document.createElement("div");
+          
+            // Set the text content of the element to the name field
+            dataElement.textContent = name;
+          
+            // Create a new image element and set its src attribute
+            const imgElement = document.createElement("img");
+            imgElement.src = downloadUrl;
+          
+            // Set the width and height of the image
+            imgElement.width = "400";
+            imgElement.height = "300";
+          
+            // Add the image element to the data element
+            dataElement.appendChild(imgElement);
+          
+            // Add the data element to the container
+            dataContainer.appendChild(dataElement);
+          }
+          
+          
+          
+          
+          
+    </script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="data-container"></div>
+</body>
+</html>
+

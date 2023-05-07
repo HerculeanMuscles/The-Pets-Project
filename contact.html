@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Pets</title>
+    <script src="https://kit.fontawesome.com/0bd3fb5950.js" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-firestore.js"></script>
+    <script>
+        		// Firebase configuration
+		const firebaseConfig = {
+            apiKey: "AIzaSyCdxgD2PVNLohexqk9vxNsOxeQD0DOFa3M",
+            authDomain: "devfinal-e54c9.firebaseapp.com",
+            databaseURL: "https://devfinal-e54c9-default-rtdb.firebaseio.com",
+            projectId: "devfinal-e54c9",
+            storageBucket: "devfinal-e54c9.appspot.com",
+            messagingSenderId: "258136195811",
+            appId: "1:258136195811:web:2321a05f4178b46a7cfbd6",
+            measurementId: "G-P2JF39S3J3"
+            };
+    
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+    
+            const db = firebase.firestore();
+
+              // Function to handle the form submission
+        function handleSubmit(event) {
+            event.preventDefault(); // Prevent the form from refreshing the page
+      
+            // Get the form values
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const subject = document.getElementById("subject").value;
+            const feedback = document.getElementById("feedback").value;
+      
+            // Create a new document in the "contacts" collection with the form data
+            db.collection("contact").add({
+              name: name,
+              email: email,
+              subject: subject,
+              feedback: feedback,
+            })
+            .then(function(docRef) {
+              console.log("Document written with ID: ", docRef.id);
+              alert("Thank you for contacting us!");
+            })
+            .catch(function(error) {
+              console.error("Error adding document: ", error);
+            });
+      
+            // Clear the form inputs
+            document.getElementById("contact-form").reset();
+          }
+    
+    </script>
+    <link rel="stylesheet" href="src/styles.css" />
+</head>
+
+<body>
+    
+    <section id="header">
+        <a href="#">
+            <div class="containerlogo">
+                <img src="src/image/logo/logo4.png" id ="mainlogo" class="logo" alt="" >
+            </div>
+        </a>
+
+        <div>
+            <ul id="navbar">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="Adopt.html">Adopt a Pet</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a class="active" href="contact.html">Contact</a></li>
+                <li id="m-cart"><div class="cartstyle">
+                    <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+                        <div id="cartamount" class="cartamount">0</div>
+                    </div></li>
+            </ul>
+        </div>
+
+        <div id="mobile">
+            <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+            <i id="bar" class="fa-solid fa-bars"></i>
+        </div>
+
+    </section>
+
+    <section id="villain" class="about-villain">
+        <h2>Contact Us Here</h2>
+        <p>Please Give Us Your FeedBack! It Helps! </p>
+    </section>
+
+    <section id="form-contact" class="section-p1">
+        <form id="contact-form" onsubmit="handleSubmit(event)">
+            <span>
+                Send A Feedback!
+            </span>
+            <h2>It'll help us improve!</h2>
+            <input type="text"  id="name" name="name" placeholder="Your Name" required>
+            <input type="email" id="email" name="email" required placeholder="E-Mail">
+            <input type="text" id="subject" name="subject" required placeholder="Subject">
+            <textarea name="" id="feedback" name="feedback" required cols="30" rows="10"placeholder="Your Feedback"></textarea>
+            <input type="submit" id="buttonstl" value="Submit">
+        </form>
+    </section>
+
+    <section id="news" class="section-p1 section-m1">
+        <div class="newstext">
+            <h4>Sign Up for Newsletter</h4>
+            <p>Get E-Mail updates about our latest <span>new products</span> and <span>offers</span> </p>
+        </div>
+        <div class="form">
+            <input type="text" placeholder="Your email address" name="" id="">
+            <button class="normal">Sign Up</button>
+        </div>
+    </section>
+
+    <footer class="section-p1">
+
+        <div class="col">
+            <div class="containerlogo">
+                <img class="footlogo" src="src/image/logo/logo4.png" id ="mainlogo" class="logo" alt="" >
+            </div>
+            <h4>Contact</h4>
+            <p><strong>Address :</strong></p>
+            <p><strong>Phone No. :</strong> +12 3456 789</p>
+            <p><strong>Hours :</strong> 08:00 - 17:00, Mon - Fri</p>
+            <div class="follow">
+                <h4>Follow Us</h4>
+                <div class="icon">
+                    <i class="fa-brands fa-facebook"></i>
+                    <i class="fa-brands fa-twitter"></i>
+                    <i class="fa-brands fa-instagram"></i>
+                    <i class="fa-brands fa-youtube"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <h4>About</h4>
+            <a href="#">About Us</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms and Conditions</a>
+            <a href="#">Contact Us</a>
+        </div>
+
+        <div class="col">
+            <h4>My Account</h4>
+            <a href="#">View Cart</a>
+            <a href="#">Help</a>
+        </div>
+
+        <div class="col payment">
+            <h4> Secured Payment Options</h4>
+            <img src="src/image/pay.png" alt="">
+        </div>
+
+        <div class="copyright">
+            <p>2023, The Pets etc</p>
+        </div>
+
+    </footer>
+
+    <script src="src/cart_noti_update.js"></script>
+    <script src="src/script.js"></script>
+
+</body>
+</html>

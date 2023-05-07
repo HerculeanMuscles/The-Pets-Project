@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Contact Us Form</title>
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
+  <script>
+    // Paste your Firebase configuration object here
+    const firebaseConfig = {
+        apiKey: "AIzaSyCdxgD2PVNLohexqk9vxNsOxeQD0DOFa3M",
+        authDomain: "devfinal-e54c9.firebaseapp.com",
+        databaseURL: "https://devfinal-e54c9-default-rtdb.firebaseio.com",
+        projectId: "devfinal-e54c9",
+        storageBucket: "devfinal-e54c9.appspot.com",
+        messagingSenderId: "258136195811",
+        appId: "1:258136195811:web:2321a05f4178b46a7cfbd6",
+        measurementId: "G-P2JF39S3J3"
+        };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Get a reference to the Firestore database
+    const db = firebase.firestore();
+
+    // Function to handle form submission
+    function handleSubmit(event) {
+      event.preventDefault(); // Prevent the form from refreshing the page
+
+      // Get the form values
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const subject = document.getElementById("subject").value;
+      const feedback = document.getElementById("feedback").value;
+
+      // Create a new document in the "contacts" collection with the form data
+      db.collection("contact").add({
+        name: name,
+        email: email,
+        subject: subject,
+        feedback: feedback,
+      })
+      .then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+        alert("Thank you for contacting us!");
+      })
+      .catch(function(error) {
+        console.error("Error adding document: ", error);
+      });
+
+      // Clear the form inputs
+      document.getElementById("contact-form").reset();
+    }
+  </script>
+</head>
+<body>
+  <h1>Contact Us</h1>
+  <form id="contact-form" onsubmit="handleSubmit(event)">
+    <label for="name">Name:</label>
+    <input type="text"  id="name" name="name" placeholder="Your Name" required>
+    <input type="email" id="email" name="email" required placeholder="E-Mail">
+    <input type="text" id="subject" name="subject" required placeholder="Subject">
+    <textarea name="" id="feedback" name="feedback" required cols="30" rows="10"placeholder="Your Feedback"></textarea>
+    <input type="submit" value="Submit">
+  </form>
+</body>
+</html>

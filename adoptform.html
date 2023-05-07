@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Pets</title>
+    <script src="https://kit.fontawesome.com/0bd3fb5950.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="src/styles.css" />
+</head>
+
+<body>
+    
+    <section id="header">
+        <a href="#">
+            <div class="containerlogo">
+                <img src="src/image/logo/logo4.png" id ="mainlogo" class="logo" alt="" >
+            </div>
+        </a>
+
+        <div>
+            <ul id="navbar">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a class="active" href="Adopt.html">Adopt a Pet</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li id="m-cart"><div class="cartstyle">
+                    <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+                        <div id="cartamount" class="cartamount">0</div>
+                    </div></li>
+            </ul>
+        </div>
+
+        <div id="mobile">
+            <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+            <i id="bar" class="fa-solid fa-bars"></i>
+        </div>
+
+    </section>
+
+    <section id="adopt-form" class="section-p1">
+        <form action="#" id="form-adopt" method="post">
+            <span>
+                Can't take care of your pets anymore?
+            </span>
+            <h2>Send your pet details here</h2>
+            <h2>and we'll try to find a new home for your pet</h2>
+            <input type="text" class='inputstyle' id="name" required placeholder="Name of your Pet">
+            <input type="text" class='inputstyle' id="email" required placeholder="E-Mail">
+            <input type="tel" class='inputstyle' id="number" required placeholder="Phone Number">
+            <textarea name="" class='inputstyle' id="description" cols="30" rows="10" required placeholder="Description"></textarea>
+            <label for="image">Send us a picture of your pet:</label>
+            <input type="file" id="image" name="image" required><br><br>
+            <input type="submit" value="Submit" id="buttonstl" onclick="submitForm(event)">
+            <input type="reset" id="buttonstl" value="Reset">
+            <input type="button" id="buttonstl" onclick="location.href='adopt.html';" value="Go to adopt page" />
+        </form>
+
+                <!-- Progress bar -->
+        <progress id="progress" max="100" value="0"></progress>
+
+    </section>
+
+    <footer class="section-p1">
+
+        <div class="col">
+            <div class="containerlogo">
+                <img class="footlogo" src="src/image/logo/logo4.png" id ="mainlogo" class="logo" alt="" >
+            </div>
+            <h4>Contact</h4>
+            <p><strong>Address :</strong></p>
+            <p><strong>Phone No. :</strong> +12 3456 789</p>
+            <p><strong>Hours :</strong> 08:00 - 17:00, Mon - Fri</p>
+            <div class="follow">
+                <h4>Follow Us</h4>
+                <div class="icon">
+                    <i class="fa-brands fa-facebook"></i>
+                    <i class="fa-brands fa-twitter"></i>
+                    <i class="fa-brands fa-instagram"></i>
+                    <i class="fa-brands fa-youtube"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <h4>About</h4>
+            <a href="#">About Us</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms and Conditions</a>
+            <a href="#">Contact Us</a>
+        </div>
+
+        <div class="col">
+            <h4>My Account</h4>
+            <a href="#">View Cart</a>
+            <a href="#">Help</a>
+        </div>
+
+        <div class="col payment">
+            <h4> Secured Payment Options</h4>
+            <img src="src/image/pay.png" alt="">
+        </div>
+
+        <div class="copyright">
+            <p>2023, The Pets etc</p>
+        </div>
+
+    </footer>
+
+    <script src="src/cart_noti_update.js"></script>
+    <script src="src/script.js"></script>
+    	<!-- Firebase SDK -->
+	<script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-storage.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-firestore.js"></script>
+
+	<script>
+		// Firebase configuration
+		const firebaseConfig = {
+		apiKey: "AIzaSyCdxgD2PVNLohexqk9vxNsOxeQD0DOFa3M",
+        authDomain: "devfinal-e54c9.firebaseapp.com",
+        databaseURL: "https://devfinal-e54c9-default-rtdb.firebaseio.com",
+        projectId: "devfinal-e54c9",
+        storageBucket: "devfinal-e54c9.appspot.com",
+        messagingSenderId: "258136195811",
+        appId: "1:258136195811:web:2321a05f4178b46a7cfbd6",
+        measurementId: "G-P2JF39S3J3"
+		};
+
+		// Initialize Firebase
+		firebase.initializeApp(firebaseConfig);
+
+		const db = firebase.firestore();
+
+        //Send data to firestore
+		function submitForm(event) {
+			event.preventDefault();
+
+			// Get the name input value
+			const name = document.getElementById('name').value;
+			const email = document.getElementById('email').value;
+            const pnumber = document.getElementById('number').value;
+			const description = document.getElementById('description').value;
+
+			// Get the image file
+			const image = document.getElementById('image').files[0];
+
+			// Create a Firebase Storage reference
+			const storageRef = firebase.storage().ref(`images/${image.name}`);
+
+			// Upload the image file to Firebase Storage
+			const uploadTask = storageRef.put(image);
+
+			// Listen for state changes, errors, and completion of the upload.
+			uploadTask.on('state_changed', function(snapshot){
+				// This is called during the upload progress.
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+				document.getElementById('progress').value = progress;
+			}, function(error) {
+				// This is called if there's an error during the upload.
+				console.log(error);
+			}, function() {
+				// This is called when the upload is complete.
+				// Get the download URL of the uploaded image
+				uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+
+					// Save the name and download URL to Firestore database
+					db.collection("adopt").add({
+						name: name,
+						email:email,
+                        pnumber: pnumber,
+						description:description,
+						img: downloadURL
+					})
+					.then(function(docRef) {
+						console.log("Document written with ID: ", docRef.id);
+
+                        // Alert the user that the data was successfully sent
+                        alert("Data successfully sent!");
+
+                        // Clear the form
+                        document.getElementById('form').reset();
+                        document.getElementById('preview').innerHTML = '';
+					})
+					.catch(function(error) {
+						console.error("Error adding document: ", error);
+					});
+
+                    document.getElementById("form-adopt").reset();
+
+				});
+			});
+		}
+	</script>
+</body>
+</html>
